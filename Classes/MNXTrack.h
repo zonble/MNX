@@ -7,7 +7,7 @@
 	NSMutableArray *splitMile;
 
 	NSTimeInterval duration;
-	
+
 	CGFloat totalDistanceKM;
 	NSTimeInterval averagePaceKM;
 	CGFloat averageSpeedKM;
@@ -16,7 +16,7 @@
 	CGFloat totalDistanceMile;
 	NSTimeInterval averagePaceMile;
 	CGFloat averageSpeedMile;
-	CGFloat maxSpeedMile;	
+	CGFloat maxSpeedMile;
 }
 
 + (NSDateFormatter *)dateFormatter;
@@ -49,6 +49,5 @@
 @property (readonly, nonatomic) NSTimeInterval averagePaceMile;
 @property (readonly, nonatomic) CGFloat averageSpeedMile;
 @property (readonly, nonatomic) CGFloat maxSpeedMile;
-
 
 @end

@@ -28,5 +28,4 @@
 @property (assign, nonatomic) CGFloat distanceKM;
 @property (assign, nonatomic) CGFloat distanceMile;
 
-
 @end

@@ -1,7 +1,6 @@
 #import "MNXAppConfig.h"
 
-static MNXAppConfig *sharedConfig;
-
+static MNXAppConfig *sharedConfig = nil;
 static NSString *const kMNXDeviceTimeZoneName = @"kMNXDeviceTimeZoneName";
 
 @implementation MNXAppConfig

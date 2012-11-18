@@ -1,186 +1,100 @@
-﻿/* No comment provided by engineer. */
-"%@ - MNX" = "%@ - MNX";
+/*
+Scan List
+../../Classes
+*/
+/* MNXAppDelegate+TableView.m */
+"km" = "公里";/**/ 
+"ml" = "英哩";/**/ 
 
-/* No comment provided by engineer. */
-"Adding Activites" = "增加記錄";
 
-/* No comment provided by engineer. */
-"As System Time Zone on My Mac (%@)" = "使用這台 Mac 上的系統時區 (%@)";
+/* MNXAppDelegate+Toolbar.m */
+"GPS Device" = "GPS 裝置";/**/ 
+"Download data from your GPS device." = "從 GPS 裝置上下載資料";/**/ 
+"Purge Data" = "清除資料";/**/ 
+"Download" = "下載";/**/ 
+"Export all activities." = "匯出全部記錄";/**/ 
+"Export" = "匯出";/**/ 
+"Export All" = "全部匯出";/**/ 
+"Select the desired device." = "選擇您想要使用的 GPS 裝置";/**/ 
+"Purge data on your GPS device." = "清除 GPS 裝置上的資料";/**/ 
+"Export selected activity." = "匯出指定的紀錄";/**/ 
+"Google Earth" = "Google Earth";/**/ 
+"View in Google Earth." = "在 Google Earth 中顯示";/**/ 
 
-/* No comment provided by engineer. */
-"Cancel" = "取消";
 
-/* Undo action */
-"Changing Time Zone Setting" = "修改時區設定";
+/* MNXAppDelegate.m */
+"Please install Google Earth." = "請在您的 Mac 上安裝 Google Earth";/**/ 
+"OK" = "好";/**/ 
+"Cancel" = "取消";/**/ 
+"Start downloading data..." = "開始下載資料…";/**/ 
+"Export As:" = "匯出成：";/**/ 
+"Loading saved data..." = "正在讀取之前儲存的紀錄…";/**/ 
+"Purging data..." = "正在清除資料…";/**/ 
+"Delete" = "刪除";/**/ 
+"per mile" = "每英哩";/**/ 
+"Devices" = "裝置列表";/**/ 
+"MNX Activities" = "MNX 軌跡記錄";/**/ 
+"No Device" = "沒有裝置";/**/ 
+"per kilometre" = "每公里";/**/ 
+"Export..." = "匯出";/**/ 
+"Start parsing data..." = "開始分析資料內容…";/**/ 
+"%@ - MNX" = "%@ - MNX";/**/ 
+"KM" = "公里";/**/ 
+"km/h" = "公里/小時";/**/ 
+"ml/h" = "英哩/小時";/**/ 
+"Downloading data, %d%% completed..." = "正在下載資料，已完成 %d%%…";/**/ 
+"Google Earth is not installed." = "尚未安裝 Google Earth";/**/ 
+"Export All..." = "全部匯出…";/**/ 
+"MNX" = "MNX";/**/ 
+"Miles" = "英哩";/**/ 
+"Do you really want to delete this activity?" = "您確定要刪除這筆記錄嗎？";/**/ 
 
-/* No comment provided by engineer. */
-"Delete" = "刪除";
 
-/* No comment provided by engineer. */
-"Deleting Activity" = "刪除記錄";
+/* MNXDataManager.m */
+"Adding Activites" = "增加記錄";/**/ 
+"Deleting Activity" = "刪除記錄";/**/ 
 
-/* No comment provided by engineer. */
-"Device" = "裝置";
 
-/* No comment provided by engineer. */
-"Devices" = "裝置列表";
+/* MNXDownloadOperation.m */
+"Unable to read data from the device." = "無法從指定的裝置上讀取資料";/**/ 
+"There is no data stored on the device..." = "您的 GPS 裝置上沒有儲存任何資料…";/**/ 
+"The device might be turned off, or you are trying to downlaod data from a non-Mainnav GPS device." = "您可能關閉了這台裝置的電源，或是您所選擇的並非 Mainnav 的 GPS 裝置。";/**/ 
+"Unable to communicate with the device." = "無法連接裝置";/**/ 
+"The connection between the device and your Mac is lost." = "GPS 裝置與您的 Mac 連線中斷";/**/ 
+"There is nothing to download or delete." = "因為沒有資料，所以無法執行下載與刪除指令";/**/ 
+"Unable to initiate the download." = "Unable to initiate the download.";/**/ 
+"Please try again." = "請稍後再試一次";/**/ 
+"Unknow error happened." = "發生了未知的錯誤";/**/ 
 
-/* No comment provided by engineer. */
-"Do you really want to delete this activity?" = "您確定要刪除這筆記錄嗎？";
 
-/* No comment provided by engineer. */
-"Download" = "下載";
+/* MNXPreferenceController.m */
+"Changing Time Zone Setting" = "修改時區設定";/**/ 
+"As System Time Zone on My Mac (%@)" = "使用這台 Mac 上的系統時區 (%@)";/**/ 
 
-/* No comment provided by engineer. */
-"Download data from your GPS device." = "從 GPS 裝置上下載資料";
 
-/* No comment provided by engineer. */
-"Downloading data, %d%% completed..." = "正在下載資料，已完成 %d%%…";
+/* MNXSourceListTableView.m */
+"You do not have any activity yet, please download data from your GPS device." = "目前還沒有任何活動記錄，請先從 GPS 裝置上下載資料";/**/ 
 
-/* No comment provided by engineer. */
-"Elevation:" = "高度:";
 
-/* No comment provided by engineer. */
-"End" = "終點";
+/* MNXTrack.m */
+"Start" = "起點";/**/ 
+"End" = "終點";/**/ 
 
-/* No comment provided by engineer. */
-"Export" = "匯出";
 
-/* No comment provided by engineer. */
-"Export All" = "全部匯出";
+/* MNXTransparentWindow.m */
+"Elevation:" = "高度:";/**/ 
+"ft" = "ft";/**/ 
+"Speed:" = "速度:";/**/ 
+"m" = "m";/**/ 
 
-/* No comment provided by engineer. */
-"Export all activities." = "匯出全部記錄";
 
-/* No comment provided by engineer. */
-"Export All..." = "全部匯出…";
+/* NSString+Extension.m */
+"min" = "分";/**/ 
+"hr" = "小時";/**/ 
+"sec" = "秒";/**/ 
 
-/* No comment provided by engineer. */
-"Export As:" = "匯出成：";
 
-/* No comment provided by engineer. */
-"Export selected activity." = "匯出指定的紀錄";
+/* Not exist */
+"Device" = "裝置";/**/ 
 
-/* No comment provided by engineer. */
-"Export..." = "匯出";
 
-/* No comment provided by engineer. */
-"ft" = "ft";
-
-/* No comment provided by engineer. */
-"Google Earth" = "Google Earth";
-
-/* No comment provided by engineer. */
-"Google Earth is not installed." = "尚未安裝 Google Earth";
-
-/* No comment provided by engineer. */
-"GPS Device" = "GPS 裝置";
-
-/* No comment provided by engineer. */
-"hr" = "小時";
-
-/* No comment provided by engineer. */
-"KM" = "公里";
-
-/* No comment provided by engineer. */
-"km" = "公里";
-
-/* No comment provided by engineer. */
-"km/h" = "公里/小時";
-
-/* No comment provided by engineer. */
-"m" = "m";
-
-/* No comment provided by engineer. */
-"Miles" = "英哩";
-
-/* No comment provided by engineer. */
-"min" = "分";
-
-/* No comment provided by engineer. */
-"ml" = "英哩";
-
-/* No comment provided by engineer. */
-"ml/h" = "英哩/小時";
-
-/* No comment provided by engineer. */
-"MNX" = "MNX";
-
-/* No comment provided by engineer. */
-"MNX Activities" = "MNX 軌跡記錄";
-
-/* No comment provided by engineer. */
-"No Device" = "沒有裝置";
-
-/* No comment provided by engineer. */
-"OK" = "好";
-
-/* No comment provided by engineer. */
-"per kilometre" = "每公里";
-
-/* No comment provided by engineer. */
-"per mile" = "每英哩";
-
-/* No comment provided by engineer. */
-"Please try again." = "請稍後再試一次";
-
-/* No comment provided by engineer. */
-"Please install Google Earth." = "請在您的 Mac 上安裝 Google Earth";
-
-/* No comment provided by engineer. */
-"Purge Data" = "清除資料";
-
-/* No comment provided by engineer. */
-"Purge data on your GPS device." = "清除 GPS 裝置上的資料";
-
-/* No comment provided by engineer. */
-"Purging data..." = "正在清除資料…";
-
-/* No comment provided by engineer. */
-"sec" = "sec";
-
-/* No comment provided by engineer. */
-"Select the desired device." = "選擇您想要使用的 GPS 裝置";
-
-/* No comment provided by engineer. */
-"Speed:" = "速度:";
-
-/* No comment provided by engineer. */
-"Start" = "起點";
-
-/* No comment provided by engineer. */
-"Start downloading data..." = "開始下載資料…";
-
-/* No comment provided by engineer. */
-"Start parsing data..." = "開始分析資料內容…";
-
-/* No comment provided by engineer. */
-"The connection between the device and your Mac is lost." = "GPS 裝置與您的 Mac 連線中斷";
-
-/* No comment provided by engineer. */
-"The device might be turned off, or you are trying to downlaod data from a non-Mainnav GPS device." = "您可能關閉了這台裝置的電源，或是您所選擇的並非 Mainnav 的 GPS 裝置。";
-
-/* MNXDownloadOperationNoDataOnDevice */
-"There is no data stored on the device..." = "您的 GPS 裝置上沒有儲存任何資料…";
-
-/* No comment provided by engineer. */
-"There is nothing to download or delete." = "因為沒有資料，所以無法執行下載與刪除指令";
-
-/* MNXDownloadOperationUnableToOpenDevice */
-"Unable to communicate with the device." = "Unable to communicate with the device.";
-
-/* MNXDownloadOperationNoDataOnDevice */
-"Unable to initiate the download." = "Unable to initiate the download.";
-
-/* MNXDownloadOperationDataTransferError */
-"Unable to read data from the device." = "無法從指定的裝置上讀取資料";
-
-/* MNXDownloadOperationUnknowError */
-"Unknow error happened." = "發生了未知的錯誤";
-
-/* No comment provided by engineer. */
-"View in Google Earth." = "在 Google Earth 中顯示";
-
-"Loading saved data..." = "正在讀取之前儲存的紀錄…";
-
-"You do not have any activity yet, please download data from your GPS device." = "目前還沒有任何活動記錄，請先從 GPS 裝置上下載資料";

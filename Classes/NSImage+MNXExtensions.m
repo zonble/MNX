@@ -60,7 +60,7 @@
 	CGFloat height= 20.0;
 	
 	NSMutableDictionary *attr = [NSMutableDictionary dictionary];
-	[attr setObject:[NSFont boldSystemFontOfSize:11.0] forKey:NSFontAttributeName];
+	[attr setObject:[NSFont boldSystemFontOfSize:9.0] forKey:NSFontAttributeName];
 	[attr setObject:[NSColor whiteColor] forKey:NSForegroundColorAttributeName];
 	NSMutableParagraphStyle *style = [[[NSMutableParagraphStyle alloc] init] autorelease];
 	[style setAlignment:NSCenterTextAlignment];

@@ -31,7 +31,7 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		CFRelease(source);
 		source = NULL;
 	}
-	
+
 	if (eventTapPortRef) {
 		CGEventTapEnable(eventTapPortRef, NO);
 		CFRelease(eventTapPortRef);
@@ -54,31 +54,31 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 
 - (void)drawWithMetricUnit
 {
-	NSMutableDictionary *attr = [NSMutableDictionary dictionary];
+	NSMutableDictionary *attr = [[NSMutableDictionary dictionary] retain];
 	[attr setObject:[NSFont boldSystemFontOfSize:11.0] forKey:NSFontAttributeName];
 	[attr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
 	NSMutableParagraphStyle *style = [[[NSMutableParagraphStyle alloc] init] autorelease];
 	[style setAlignment:NSRightTextAlignment];
-	[attr setObject:style forKey:NSParagraphStyleAttributeName];	
-	
+	[attr setObject:style forKey:NSParagraphStyleAttributeName];
+
 	CGFloat frameWidth = [self frameWidth];
 	NSRect drawingFrame = [self drawingFrame];
-	
+
 	NSRect zeroFrame = NSMakeRect(0.0, NSMinY(drawingFrame) - 20.0, frameWidth - 10.0, 13.0);
 	[@"0" drawInRect:zeroFrame withAttributes:attr];
-	
+
 	NSRect speedUnitFrame = NSMakeRect(0.0, NSMaxY(drawingFrame) + 20.0, frameWidth, 13.0);
 	[@"km/h" drawInRect:speedUnitFrame withAttributes:attr];
-	
+
 	if ([self.currentTrack.points count] < 2) {
 		return;
 	}
 	if (!self.currentTrack.totalDistanceKM) {
 		return;
 	}
-	
+
 	[style setAlignment:NSRightTextAlignment];
-	
+
 	CGFloat maxSpeed = 0.0;
 	CGFloat maxElevation = 0.0;
 	CGFloat minElevation = 0.0;
@@ -91,11 +91,11 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	NSUInteger count = 0;
 	CGFloat aSpeed = 0.0;
 	CGFloat anElevation = 0.0;
-	
+
 	for (MNXPoint *point in self.currentTrack.points) {
 		if (point == [self.currentTrack.points objectAtIndex:0]) {
 			CGFloat speed = (point.speedKM > 0.0) ? point.speedKM : 0.0;
-			NSMutableDictionary *p = [NSMutableDictionary dictionary];	
+			NSMutableDictionary *p = [NSMutableDictionary dictionary];
 			[p setObject:[NSNumber numberWithFloat:point.distanceKM] forKey:@"distance"];
 			[p setObject:[NSNumber numberWithFloat:speed] forKey:@"speed"];
 			[p setObject:[NSNumber numberWithFloat:point.elevation] forKey:@"elevation"];
@@ -122,7 +122,7 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 				aSpeed = 0.0;
 				anElevation = 0.0;
 			}
-			NSMutableDictionary *p = [NSMutableDictionary dictionary];	
+			NSMutableDictionary *p = [NSMutableDictionary dictionary];
 			[p setObject:[NSNumber numberWithFloat:point.distanceKM] forKey:@"distance"];
 			[p setObject:[NSNumber numberWithFloat:speed] forKey:@"speed"];
 			[p setObject:[NSNumber numberWithFloat:elevation] forKey:@"elevation"];
@@ -134,12 +134,12 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			}
 			if (elevation < minElevation) {
 				minElevation = elevation;
-			}			
-			
+			}
+
 			[a addObject:p];
 		}
 	}
-	
+
 	if (maxSpeed < 5.0) {
 		maxSpeed = 5.0;
 	}
@@ -149,49 +149,49 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	currentMaxSpeedKM = maxSpeed;
 	maxElevation += 10.0;
 	minElevation -= 10.0;
-	
+
 	NSInteger speedInterval = maxSpeed / 5;
-	
+
 	if (speedInterval < 1) {
 		speedInterval = 1;
 	}
 	else if (speedInterval > 20 && (speedInterval % 20)) {
 		speedInterval = speedInterval + (10 - (speedInterval % 10));
-	}	
+	}
 	else if (speedInterval > 10 && (speedInterval % 5)) {
 		speedInterval = speedInterval + (5 - (speedInterval % 5));
-	}	
+	}
 	else if (speedInterval > 5 && (speedInterval % 5)) {
 		speedInterval = speedInterval + (5 - (speedInterval % 5));
 	}
 	else if (speedInterval > 3 && speedInterval < 5) {
 		speedInterval = 5;
 	}
-	
-	
+
+
 	NSInteger distanceInterval = (NSInteger)(self.currentTrack.totalDistanceKM / 5.0);
-	
+
 	if (distanceInterval > 20 && (distanceInterval % 20)) {
 		distanceInterval = distanceInterval + (10 - (distanceInterval % 10));
-	}	
+	}
 	else if (distanceInterval > 10 && (distanceInterval % 10)) {
 		distanceInterval = distanceInterval + (5 - (distanceInterval % 5));
-	}	
+	}
 	else if (distanceInterval > 5 && (distanceInterval % 5)) {
 		distanceInterval = distanceInterval + (5 - (distanceInterval % 5));
 	}
 	else if (distanceInterval > 3 && distanceInterval < 5) {
 		distanceInterval = 5;
-	}	
-	
+	}
+
 	for (NSUInteger i = 1; (CGFloat)(i * speedInterval) < maxSpeed ; i++) {
 		CGFloat y = (CGFloat)(i * speedInterval) / maxSpeed * drawingFrame.size.height + NSMinY(drawingFrame);
-		
+
 		NSRect labelFrame = NSMakeRect(0.0, y - 5.0, frameWidth - 10.0, 13.0);
 		NSString *labelText = [NSString stringWithFormat:@"%d", (i * speedInterval)];
 		[labelText drawInRect:labelFrame withAttributes:attr];
 
-		NSBezierPath *intervalLine = [NSBezierPath bezierPath];		
+		NSBezierPath *intervalLine = [NSBezierPath bezierPath];
 		[intervalLine moveToPoint:NSMakePoint(NSMinX(drawingFrame),  y)];
 		[intervalLine lineToPoint:NSMakePoint(NSMaxX(drawingFrame), y)];
 		CGFloat dash[2] = {5.0, 2.0};
@@ -199,9 +199,9 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		[[NSColor grayColor] setStroke];
 		[intervalLine stroke];
 	}
-	
+
 	[style setAlignment:NSCenterTextAlignment];
-	
+
 	if (distanceInterval) {
 		for (NSUInteger i = 1; (CGFloat)(i * distanceInterval) < self.currentTrack.totalDistanceKM  ; i++) {
 			CGFloat x = (CGFloat)(i * distanceInterval) / self.currentTrack.totalDistanceKM * drawingFrame.size.width + NSMinX(drawingFrame);
@@ -210,23 +210,23 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			[intervalLine lineToPoint:NSMakePoint(x, NSMinY(drawingFrame) + 10.0)];
 			[[NSColor blackColor] setStroke];
 			[intervalLine stroke];
-			
+
 			NSRect labelFrame = NSMakeRect(x - (frameWidth / 2.0), NSMinY(drawingFrame) - 20.0, frameWidth, 13.0);
 			NSString *labelText = [NSString stringWithFormat:@"%d %@", (i * distanceInterval),  NSLocalizedString(@"km", @"")];
 			[labelText drawInRect:labelFrame withAttributes:attr];
-			
+
 		}
 	}
 	else {
 		NSRect labelFrame = NSMakeRect(NSMaxX(drawingFrame) - frameWidth, NSMinY(drawingFrame) - 20.0, frameWidth, 13.0);
 		[style setAlignment:NSRightTextAlignment];
 		NSString *labelText = [NSString stringWithFormat:@"%.2f %@", self.currentTrack.totalDistanceKM, NSLocalizedString(@"km", @"")];
-		[labelText drawInRect:labelFrame withAttributes:attr];		
+		[labelText drawInRect:labelFrame withAttributes:attr];
 	}
-	
+
 	NSBezierPath *path = [NSBezierPath bezierPath];
 	[path setLineJoinStyle:NSRoundLineJoinStyle];
-	
+
 	for (NSDictionary *p in a) {
 		CGFloat x = frameWidth + ([[p objectForKey:@"distance"] floatValue] / self.currentTrack.totalDistanceKM) * drawingFrame.size.width;
 		CGFloat y = frameWidth + [[p objectForKey:@"speed"] floatValue] / maxSpeed * drawingFrame.size.height;
@@ -240,10 +240,10 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			[path lineToPoint:NSMakePoint(NSMaxX(drawingFrame), y)];
 		}
 	}
-	
+
 	NSBezierPath *elevationPath = [NSBezierPath bezierPath];
 	[elevationPath setLineJoinStyle:NSRoundLineJoinStyle];
-	
+
 	for (NSDictionary *p in a) {
 		CGFloat x = frameWidth + ([[p objectForKey:@"distance"] floatValue] / self.currentTrack.totalDistanceKM) * drawingFrame.size.width;
 		CGFloat y = frameWidth + ([[p objectForKey:@"elevation"] floatValue] - minElevation) / (maxElevation - minElevation) * drawingFrame.size.height * 0.5;
@@ -257,67 +257,55 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			[elevationPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), y)];
 		}
 	}
-	
+
 	[[NSGraphicsContext currentContext] saveGraphicsState];
 	[[NSBezierPath bezierPathWithRect:[self drawingFrame]] setClip];
-	
+
 	NSColor *lineColor = [NSColor speedLineColor];
 	NSColor *backgroundColor = [NSColor speedBackgroundColorColor];
 
-//	NSColor *elevationLineColor = [NSColor elevationLineColor];
-//	NSColor *elevationBackgroundColor = [NSColor elevationBackgroundColorColor];
-
-//	NSBezierPath *elevationBackgroundPath = [[elevationPath copy] autorelease];
-//	[elevationBackgroundPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), NSMinY(drawingFrame))];
-//	[elevationBackgroundPath lineToPoint:NSMakePoint(NSMinX(drawingFrame), NSMinY(drawingFrame))];
-//	[elevationBackgroundPath closePath];
-//	[elevationBackgroundColor setFill];
-//	[elevationBackgroundPath fill];	
-	
 	NSBezierPath *backgroundPath = [[path copy] autorelease];
 	[backgroundPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), NSMinY(drawingFrame))];
 	[backgroundPath lineToPoint:NSMakePoint(NSMinX(drawingFrame), NSMinY(drawingFrame))];
 	[backgroundPath closePath];
 	[backgroundColor setFill];
 	[backgroundPath fill];
-	
-//	[elevationLineColor setStroke];
-//	[elevationPath setLineWidth:3.0];
-//	[elevationPath stroke];
-	
+
 	[lineColor setStroke];
 	[path setLineWidth:3.0];
 	[path stroke];
-	
+
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
+
+	[attr release];
 }
 
 - (void)drawWithUSUnit
 {
-	NSMutableDictionary *attr = [NSMutableDictionary dictionary];
+	NSMutableDictionary *attr = [[NSMutableDictionary dictionary] retain];
 	[attr setObject:[NSFont boldSystemFontOfSize:11.0] forKey:NSFontAttributeName];
 	[attr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
 	NSMutableParagraphStyle *style = [[[NSMutableParagraphStyle alloc] init] autorelease];
 	[style setAlignment:NSRightTextAlignment];
-	[attr setObject:style forKey:NSParagraphStyleAttributeName];		
-	
+	[attr setObject:style forKey:NSParagraphStyleAttributeName];
+
 	CGFloat frameWidth = [self frameWidth];
 	NSRect drawingFrame = [self drawingFrame];
-	
+
 	NSRect zeroFrame = NSMakeRect(0.0, NSMinY(drawingFrame) - 20.0, frameWidth - 10.0, 13.0);
 	[@"0" drawInRect:zeroFrame withAttributes:attr];
-	
+
 	NSRect speedUnitFrame = NSMakeRect(0.0, NSMaxY(drawingFrame) + 20.0, frameWidth, 13.0);
 	[NSLocalizedString(@"ml/h", @"") drawInRect:speedUnitFrame withAttributes:attr];
-	
+
 	if ([self.currentTrack.points count] < 2) {
 		return;
 	}
 	if (!self.currentTrack.totalDistanceMile) {
 		return;
 	}
-	
-	CGFloat maxSpeed = 0.0;	
+
+	CGFloat maxSpeed = 0.0;
 	CGFloat maxElevation = 0.0;
 	CGFloat minElevation = 0.0;
 	NSInteger maxPointCount = 200;
@@ -325,15 +313,15 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	NSInteger pointPerSection = (NSInteger)([self.currentTrack.points count] / maxPointCount);
 	if (pointPerSection < 1) {
 		pointPerSection = 1;
-	}	
+	}
 	NSUInteger count = 0;
 	CGFloat aSpeed = 0.0;
 	CGFloat anElevation = 0.0;
-	
+
 	for (MNXPoint *point in self.currentTrack.points) {
 		if (point == [self.currentTrack.points objectAtIndex:0]) {
 			CGFloat speed = (point.speedMile > 0.0) ? point.speedMile : 0.0;
-			NSMutableDictionary *p = [NSMutableDictionary dictionary];	
+			NSMutableDictionary *p = [NSMutableDictionary dictionary];
 			[p setObject:[NSNumber numberWithFloat:point.distanceMile] forKey:@"distance"];
 			[p setObject:[NSNumber numberWithFloat:speed] forKey:@"speed"];
 			maxSpeed = speed;
@@ -359,7 +347,7 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 				aSpeed = 0.0;
 				anElevation = 0.0;
 			}
-			NSMutableDictionary *p = [NSMutableDictionary dictionary];	
+			NSMutableDictionary *p = [NSMutableDictionary dictionary];
 			[p setObject:[NSNumber numberWithFloat:point.distanceMile] forKey:@"distance"];
 			[p setObject:[NSNumber numberWithFloat:speed] forKey:@"speed"];
 			[p setObject:[NSNumber numberWithFloat:elevation] forKey:@"elevation"];
@@ -371,12 +359,12 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			}
 			if (elevation < minElevation) {
 				minElevation = elevation;
-			}			
+			}
 
 			[a addObject:p];
 		}
 	}
-	
+
 	if (maxSpeed < 5.0) {
 		maxSpeed = 5.0;
 	}
@@ -386,44 +374,44 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	currentMaxSpeedMile = maxSpeed;
 	maxElevation += 10.0;
 	minElevation -= 10.0;
-	
+
 	NSInteger speedInterval = maxSpeed / 5;
-	
+
 	if (speedInterval < 1) {
 		speedInterval = 1;
 	}
 	else if (speedInterval > 20 && (speedInterval % 20)) {
 		speedInterval = speedInterval + (10 - (speedInterval % 10));
-	}	
+	}
 	else if (speedInterval > 10 && (speedInterval % 5)) {
 		speedInterval = speedInterval + (5 - (speedInterval % 5));
-	}	
+	}
 	else if (speedInterval > 5 && (speedInterval % 5)) {
 		speedInterval = speedInterval + (5 - (speedInterval % 5));
 	}
 	else if (speedInterval > 3 && speedInterval < 5) {
 		speedInterval = 5;
 	}
-	
-	
+
+
 	NSInteger distanceInterval = (NSInteger)(self.currentTrack.totalDistanceMile / 5.0);
-	
+
 	if (distanceInterval > 20 && (distanceInterval % 20)) {
 		distanceInterval = distanceInterval + (10 - (distanceInterval % 10));
-	}	
+	}
 	else if (distanceInterval > 10 && (distanceInterval % 10)) {
 		distanceInterval = distanceInterval + (5 - (distanceInterval % 5));
-	}	
+	}
 	else if (distanceInterval > 5 && (distanceInterval % 5)) {
 		distanceInterval = distanceInterval + (5 - (distanceInterval % 5));
 	}
 	else if (distanceInterval > 3 && distanceInterval < 5) {
 		distanceInterval = 5;
-	}	
-	
+	}
+
 	for (NSUInteger i = 1; (CGFloat)(i * speedInterval) < maxSpeed ; i++) {
 		CGFloat y = (CGFloat)(i * speedInterval) / maxSpeed * drawingFrame.size.height + NSMinY(drawingFrame);
-		
+
 		NSRect labelFrame = NSMakeRect(0.0, y - 5.0, frameWidth - 10.0, 13.0);
 		NSString *labelText = [NSString stringWithFormat:@"%d", (i * speedInterval)];
 		[labelText drawInRect:labelFrame withAttributes:attr];
@@ -436,9 +424,9 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		[[NSColor grayColor] setStroke];
 		[intervalLine stroke];
 	}
-	
+
 	[style setAlignment:NSCenterTextAlignment];
-	
+
 	if (distanceInterval) {
 		for (NSUInteger i = 1; (CGFloat)(i * distanceInterval) < self.currentTrack.totalDistanceMile  ; i++) {
 			CGFloat x = (CGFloat)(i * distanceInterval) / self.currentTrack.totalDistanceMile * drawingFrame.size.width + NSMinX(drawingFrame);
@@ -447,11 +435,11 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			[intervalLine lineToPoint:NSMakePoint(x, NSMinY(drawingFrame) + 10.0)];
 			[[NSColor blackColor] setStroke];
 			[intervalLine stroke];
-			
+
 			NSRect labelFrame = NSMakeRect(x - (frameWidth / 2.0), NSMinY(drawingFrame) - 20.0, frameWidth, 13.0);
 			NSString *labelText = [NSString stringWithFormat:@"%d %@", (i * distanceInterval),  NSLocalizedString(@"ml", @"")];
 			[labelText drawInRect:labelFrame withAttributes:attr];
-			
+
 		}
 	}
 	else {
@@ -460,10 +448,10 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		NSString *labelText = [NSString stringWithFormat:@"%.2f %@", self.currentTrack.totalDistanceMile, NSLocalizedString(@"ml", @"")];
 		[labelText drawInRect:labelFrame withAttributes:attr];
 	}
-	
+
 	NSBezierPath *path = [NSBezierPath bezierPath];
 	[path setLineJoinStyle:NSRoundLineJoinStyle];
-	
+
 	for (NSDictionary *p in a) {
 		CGFloat x = frameWidth + ([[p objectForKey:@"distance"] floatValue] / self.currentTrack.totalDistanceMile) * drawingFrame.size.width;
 		CGFloat y = frameWidth + [[p objectForKey:@"speed"] floatValue] / maxSpeed * drawingFrame.size.height;
@@ -477,10 +465,10 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			[path lineToPoint:NSMakePoint(NSMaxX(drawingFrame), y)];
 		}
 	}
-	
+
 	NSBezierPath *elevationPath = [NSBezierPath bezierPath];
 	[elevationPath setLineJoinStyle:NSRoundLineJoinStyle];
-	
+
 	for (NSDictionary *p in a) {
 		CGFloat x = frameWidth + ([[p objectForKey:@"distance"] floatValue] / self.currentTrack.totalDistanceMile) * drawingFrame.size.width;
 		CGFloat y = frameWidth + ([[p objectForKey:@"elevation"] floatValue] - minElevation) / (maxElevation - minElevation) * drawingFrame.size.height * 0.5;
@@ -493,24 +481,14 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		if (p == [a lastObject]) {
 			[elevationPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), y)];
 		}
-	}	
-	
+	}
+
 	[[NSGraphicsContext currentContext] saveGraphicsState];
 	[[NSBezierPath bezierPathWithRect:[self drawingFrame]] setClip];
-	
+
 	NSColor *lineColor = [NSColor speedLineColor];
 	NSColor *backgroundColor = [NSColor speedBackgroundColorColor];
-	
-//	NSColor *elevationLineColor = [NSColor elevationLineColor];
-//	NSColor *elevationBackgroundColor = [NSColor elevationBackgroundColorColor];
-	
-//	NSBezierPath *elevationBackgroundPath = [[elevationPath copy] autorelease];
-//	[elevationBackgroundPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), NSMinY(drawingFrame))];
-//	[elevationBackgroundPath lineToPoint:NSMakePoint(NSMinX(drawingFrame), NSMinY(drawingFrame))];
-//	[elevationBackgroundPath closePath];
-//	[elevationBackgroundColor setFill];
-//	[elevationBackgroundPath fill];	
-//	
+
 	NSBezierPath *backgroundPath = [[path copy] autorelease];
 	[backgroundPath lineToPoint:NSMakePoint(NSMaxX(drawingFrame), NSMinY(drawingFrame))];
 	[backgroundPath lineToPoint:NSMakePoint(NSMinX(drawingFrame), NSMinY(drawingFrame))];
@@ -518,32 +496,30 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	[backgroundColor setFill];
 	[backgroundPath fill];
 
-//	[elevationLineColor setStroke];
-//	[elevationPath setLineWidth:3.0];
-//	[elevationPath stroke];
-	
 	[lineColor setStroke];
 	[path setLineWidth:3.0];
 	[path stroke];
 
 	[[NSGraphicsContext currentContext] restoreGraphicsState];
+
+	[attr release];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[[NSColor whiteColor] setFill];
 	[NSBezierPath fillRect:[self bounds]];
-		
+
 	if ([self bounds].size.width < 100.0) {
 		return;
 	}
-	
+
 	if ([self bounds].size.height < 100.0) {
 		return;
 	}
-	
+
 	NSRect drawingFrame = [self drawingFrame];
-	
+
 	NSBezierPath *border = [NSBezierPath bezierPath];
 	[border moveToPoint:NSMakePoint(NSMinX(drawingFrame), NSMaxY(drawingFrame))];
 	[border lineToPoint:NSMakePoint(NSMinX(drawingFrame), NSMinY(drawingFrame))];
@@ -551,7 +527,7 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	[border lineToPoint:NSMakePoint(NSMaxX(drawingFrame), NSMaxY(drawingFrame))];
 	[[NSColor grayColor] setStroke];
 	[border stroke];
-	
+
 	if ([NSLocale usingUSMeasurementUnit]) {
 		[self drawWithUSUnit];
 	}
@@ -571,8 +547,8 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 	if ([infoWindow isVisible]) {
 		[[self window] removeChildWindow:infoWindow];
 		[infoWindow orderOut:self];
-	}	
-	
+	}
+
 	if (currentTrack) {
 		[self startTracking];
 	}
@@ -622,17 +598,17 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 			aPoint = enumPoint;
 			break;
 		}
-	}	
+	}
 	return aPoint;
 }
 
 - (void)showInfoWindowWithPoint:(MNXPoint *)inPoint atLocation:(NSPoint)inLocation
-{	
+{
 	inLocation = [self convertPoint:inLocation toView:nil];
 	inLocation.y += 5.0;
 	inLocation.x += [[self window] frame].origin.x;
 	inLocation.y += [[self window] frame].origin.y;
-	
+
 	[infoWindow setPoint:inPoint];
 	NSRect frame = [infoWindow frame];
 	[infoWindow setFrameOrigin:NSMakePoint(inLocation.x - frame.size.width / 2.0, inLocation.y)];
@@ -649,28 +625,28 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		}
 		return;
 	}
-	
+
 	if (![[self window] isMainWindow] || ![[self window] isKeyWindow]) {
 		if ([infoWindow isVisible]) {
 			[[self window] removeChildWindow:infoWindow];
 			[infoWindow orderOut:self];
-		}		
+		}
 		return;
 	}
-	
+
 	if ([[self window] attachedSheet]) {
 		if ([infoWindow isVisible]) {
 			[[self window] removeChildWindow:infoWindow];
 			[infoWindow orderOut:self];
-		}		
-		return;		
+		}
+		return;
 	}
-	
-	
+
+
 	if (CGEventGetType(inEvent) == kCGEventMouseMoved) {
 		CGPoint p = CGEventGetLocation(inEvent);
 		p.y = [[NSScreen mainScreen] frame].size.height - p.y;
-		
+
 		NSPoint np = NSPointFromCGPoint(p);
 		NSPoint wp = [[self window] convertScreenToBase:np];
 		NSPoint localPoint = [self convertPoint:wp fromView:nil];
@@ -681,7 +657,7 @@ static CGEventRef MyEventTapCallBack (CGEventTapProxy proxy, CGEventType type, C
 		}
 		[[self window] removeChildWindow:infoWindow];
 		[infoWindow orderOut:self];
-	}	
+	}
 }
 
 @end

@@ -20,7 +20,7 @@
 			if ([parts count] < 2) {
 				continue;
 			}
-			
+
 			NSString *region = [parts objectAtIndex:0];
 			parts = [parts subarrayWithRange:NSMakeRange(1, [parts count] - 1)];
 			NSString *city = [parts componentsJoinedByString:@"/"];
@@ -62,15 +62,15 @@
 - (void)refresh
 {
 	NSCell *aCell = [timezoneMatrix cellWithTag:0];
-	
+
 	NSTimeZone *currentTimeZone = [NSTimeZone systemTimeZone];
 	NSString *currentTimeZoneName = [currentTimeZone localizedName:NSTimeZoneNameStyleGeneric locale:[NSLocale currentLocale]];
-	
+
 	NSString *title = [NSString stringWithFormat:NSLocalizedString(@"As System Time Zone on My Mac (%@)", @""), currentTimeZoneName];
 	[aCell setTitle:title];
 
 	[self deselectAllTimeZone];
-	
+
 	NSTimeZone *aTimeZone = [NSTimeZone timeZoneWithName:AppConfig().deviceTimeZoneName];;
 	if (![AppConfig().deviceTimeZoneName length] || !aTimeZone) {
 		[timezoneMatrix selectCellWithTag:0];
@@ -97,13 +97,13 @@
 		[timeZoneOutlineView expandItem:currentRegion expandChildren:YES];
 		NSInteger row = [timeZoneOutlineView rowForItem:item];
 		[timeZoneOutlineView scrollRowToVisible:row];
-		[timeZoneOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];		
+		[timeZoneOutlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	}
 }
 - (void)setNewTimeZoneSettingWithName:(NSString *)newTimeZoneName
 {
 	[[self undoManager] setActionName:NSLocalizedString(@"Changing Time Zone Setting", @"Undo action")];
-	[[[self undoManager] prepareWithInvocationTarget:self] setNewTimeZoneSettingWithName:AppConfig().deviceTimeZoneName];	
+	[[[self undoManager] prepareWithInvocationTarget:self] setNewTimeZoneSettingWithName:AppConfig().deviceTimeZoneName];
 	AppConfig().deviceTimeZoneName = newTimeZoneName;
 	[self refresh];
 }
@@ -123,7 +123,7 @@
 		if (![AppConfig().deviceTimeZoneName length]) {
 			NSTimeZone *currentTimeZone = [NSTimeZone systemTimeZone];
 			[self setNewTimeZoneSettingWithName:[currentTimeZone name]];
-		}		
+		}
 	}
 	else {
 		if ([AppConfig().deviceTimeZoneName length]) {
@@ -142,19 +142,18 @@
 
 #pragma mark -
 
-
-- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item 
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	if (!item) {
 		return [groupedTimeZones count];
 	}
 	if ([item isKindOfClass:[NSArray class]] && [[item objectAtIndex:0] isKindOfClass:[NSString class]]) {
 		return [[item objectAtIndex:1] count];
-	}	
+	}
 	return 0;
 }
-- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item 
-{	
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
 	if (!item) {
 		return [groupedTimeZones objectAtIndex:index];
 	}
@@ -171,7 +170,7 @@
 	return NO;
 }
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item 
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
 	if (!item) {
 		return YES;
@@ -187,7 +186,7 @@
 	[cell setFont:[NSFont systemFontOfSize:11.0]];
 }
 
-- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item 
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
 	if (!item) {
 		return @"/";
@@ -209,7 +208,7 @@
 		}
 		if ([[tableColumn identifier] isEqualToString:@"checked"]) {
 			return [item objectForKey:@"checked"];
-		}		
+		}
 	}
 	return nil;
 }
@@ -226,7 +225,7 @@
 {
 	if ([[tableColumn identifier] isEqualToString:@"checked"] && [item isKindOfClass:[NSArray class]]) {
 		return [[[NSCell alloc] init] autorelease];
-	}	
+	}
 	return nil;
 }
 

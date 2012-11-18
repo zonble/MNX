@@ -40,7 +40,7 @@ static NSDateFormatter *sharedFormatter;
 		sharedFormatter = [[NSDateFormatter alloc] init];
 		[sharedFormatter setLocale:[[[NSLocale alloc] initWithLocaleIdentifier:@"en"] autorelease]];
 		[sharedFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-		[sharedFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];			
+		[sharedFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
 	}
 	return sharedFormatter;
 }
@@ -69,7 +69,7 @@ static NSDateFormatter *sharedFormatter;
 	if (![pointArray count]) {
 		return @"Empty Track";
 	}
-	
+
 	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
 	[formatter setDateStyle:NSDateFormatterShortStyle];
 	[formatter setTimeStyle:NSDateFormatterShortStyle];
@@ -82,12 +82,12 @@ static NSDateFormatter *sharedFormatter;
 
 + (NSXMLNode *)GPXRootNode:(out NSXMLNode **)outTrackContainer
 {
-	NSXMLElement *root = (NSXMLElement *)[NSXMLNode elementWithName:@"gpx"];	
+	NSXMLElement *root = (NSXMLElement *)[NSXMLNode elementWithName:@"gpx"];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"" stringValue:@"http://www.topografix.com/GPX/1/1"]];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"xsi" stringValue:@"http://www.w3.org/2001/XMLSchema-instance"]];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"gpxx" stringValue:@"http://www.garmin.com/xmlschemas/GpxExtensions/v3"]];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"gpxtpx" stringValue:@"http://www.garmin.com/xmlschemas/TrackPointExtension/v1"]];
-	
+
 	[root addAttribute:[NSXMLNode attributeWithName:@"xsi:schemaLocation" stringValue:@"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"]];
 	[root addAttribute:[NSXMLNode attributeWithName:@"version" stringValue:@"1.1"]];
 	[root addAttribute:[NSXMLNode attributeWithName:@"creator" stringValue:@"MNX"]];
@@ -101,31 +101,31 @@ static NSDateFormatter *sharedFormatter;
 	[root addNamespace:[NSXMLNode namespaceWithName:@"gx" stringValue:@"http://www.google.com/kml/ext/2.2"]];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"kml" stringValue:@"http://www.opengis.net/kml/2.2"]];
 	[root addNamespace:[NSXMLNode namespaceWithName:@"atom" stringValue:@"http://www.w3.org/2005/Atom"]];
-	
+
 	NSXMLElement *document = (NSXMLElement *)[NSXMLNode elementWithName:@"Document"];
 	[root addChild:document];
-	
+
 	[document addChild:[NSXMLNode elementWithName:@"name" stringValue:NSLocalizedString(@"MNX Activities", @"")]];
-	
+
 	NSXMLElement *style = (NSXMLElement *)[NSXMLNode elementWithName:@"Style"];
 	[style addAttribute:[NSXMLNode attributeWithName:@"id" stringValue:@"track_style"]];
-	NSXMLElement *lineStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"LineStyle"];	
+	NSXMLElement *lineStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"LineStyle"];
 	[lineStyle addChild:[NSXMLNode elementWithName:@"color" stringValue:@"99ffac59"]];
-	[lineStyle addChild:[NSXMLNode elementWithName:@"width" stringValue:@"6"]];	 
-	NSXMLElement *polyStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"PolyStyle"];	
+	[lineStyle addChild:[NSXMLNode elementWithName:@"width" stringValue:@"6"]];
+	NSXMLElement *polyStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"PolyStyle"];
 	[polyStyle addChild:[NSXMLNode elementWithName:@"color" stringValue:@"99ffac59"]];
-	[polyStyle addChild:[NSXMLNode elementWithName:@"width" stringValue:@"6"]];	 
-	
-	NSXMLElement *iconStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"IconStyle"];	
+	[polyStyle addChild:[NSXMLNode elementWithName:@"width" stringValue:@"6"]];
+
+	NSXMLElement *iconStyle = (NSXMLElement *)[NSXMLNode elementWithName:@"IconStyle"];
 	NSXMLElement *icon = (NSXMLElement *)[NSXMLNode elementWithName:@"Icon"];
 	[icon addChild:[NSXMLNode elementWithName:@"href" stringValue:@"http://earth.google.com/images/kml-icons/track-directional/track-0.png"]];
 	[iconStyle addChild:icon];
-	
+
 	[style addChild:lineStyle];
 	[style addChild:polyStyle];
 	[style addChild:iconStyle];
 	[document addChild:style];
-	
+
 	*outTrackContainer = document;
 	return root;
 }
@@ -152,11 +152,11 @@ static NSDateFormatter *sharedFormatter;
 		NSXMLElement *time = (NSXMLElement *)[NSXMLNode elementWithName:@"time" stringValue:[formatter stringFromDate:point.date]];
 		NSXMLElement *ele = (NSXMLElement *)[NSXMLNode elementWithName:@"ele" stringValue:[NSString stringWithFormat:@"%d", (NSInteger)point.elevation]];
 		NSXMLNode *lon = [NSXMLNode attributeWithName:@"lon" stringValue:[NSString stringWithFormat:@"%f", point.longitude]];
-		NSXMLNode *lat = [NSXMLNode attributeWithName:@"lat" stringValue:[NSString stringWithFormat:@"%f", point.latitude]];		
+		NSXMLNode *lat = [NSXMLNode attributeWithName:@"lat" stringValue:[NSString stringWithFormat:@"%f", point.latitude]];
 		NSXMLElement *trkpt = [NSXMLNode elementWithName:@"trkpt"];
 		[trkpt addChild:time];
 		[trkpt addChild:ele];
-		[trkpt addAttribute:lat];	
+		[trkpt addAttribute:lat];
 		[trkpt addAttribute:lon];
 		[trkseg addChild:trkpt];
 	}
@@ -172,31 +172,32 @@ static NSDateFormatter *sharedFormatter;
 	[placemark addChild:[NSXMLNode elementWithName:@"gx:balloonVisibility" stringValue:@"1"]];
 	NSXMLElement *track = (NSXMLElement *)[NSXMLNode elementWithName:@"gx:Track"];
 	for (MNXPoint *point in pointArray) {
-		[track addChild:[NSXMLNode elementWithName:@"when" stringValue:[formatter stringFromDate:point.date]]];		
+		[track addChild:[NSXMLNode elementWithName:@"when" stringValue:[formatter stringFromDate:point.date]]];
 	}
 	for (MNXPoint *point in pointArray) {
 		NSString *line = [NSString stringWithFormat:@"%f %f %f", point.longitude, point.latitude, point.elevation];
-		[track addChild:[NSXMLNode elementWithName:@"gx:coord" stringValue:line]];		
+		[track addChild:[NSXMLNode elementWithName:@"gx:coord" stringValue:line]];
 	}
-	
+
 	[placemark addChild:track];
 	return placemark;
 }
+
 - (NSXMLNode *)TCXNode
 {
 	NSDateFormatter *formatter = [MNXTrack dateFormatter];
-	
+
 	if ([self.points count]) {
 		NSXMLElement *activity = (NSXMLElement *)[NSXMLNode elementWithName:@"Activity"];
-		
+
 		NSString *activityID = [formatter stringFromDate:[(MNXPoint *)[self.points objectAtIndex:0] date]];
 		[activity addChild:[NSXMLNode elementWithName:@"Id" stringValue:activityID]];
-		
+
 		NSXMLElement *lap = (NSXMLElement *)[NSXMLNode elementWithName:@"Lap"];
 		[lap addAttribute:[NSXMLNode attributeWithName:@"StartTime" stringValue:activityID]];
 		[lap addChild:[NSXMLNode elementWithName:@"TotalTimeSeconds" stringValue:[NSString stringWithFormat:@"%f", duration]]];
 		[lap addChild:[NSXMLNode elementWithName:@"DistanceMeters" stringValue:[NSString stringWithFormat:@"%f", totalDistanceKM * 100.0]]];
-		NSXMLElement *track = (NSXMLElement *)[NSXMLNode elementWithName:@"Track"];		
+		NSXMLElement *track = (NSXMLElement *)[NSXMLNode elementWithName:@"Track"];
 		for (MNXPoint *point in pointArray) {
 			NSXMLElement *trackPoint = (NSXMLElement *)[NSXMLNode elementWithName:@"Trackpoint"];
 			[trackPoint addChild:[NSXMLNode elementWithName:@"Time" stringValue:[formatter stringFromDate:point.date]]];
@@ -215,7 +216,7 @@ static NSDateFormatter *sharedFormatter;
 }
 
 - (NSData *)GPXData
-{	
+{
 	NSXMLElement *container = nil;
 	NSXMLElement *root = (NSXMLElement *)[MNXTrack GPXRootNode:&container];
 	NSXMLDocument *xml = [[[NSXMLDocument alloc] initWithRootElement:root] autorelease];
@@ -233,21 +234,21 @@ static NSDateFormatter *sharedFormatter;
 	NSXMLDocument *xml = [[[NSXMLDocument alloc] initWithRootElement:root] autorelease];
 	[xml setVersion:@"1.0"];
 	[xml setCharacterEncoding:@"UTF-8"];
-	
-	
+
+
 	if (![pointArray count]) {
 		NSData *data = [xml XMLData];
 		return data;
 	}
-	
+
 	NSXMLElement *lookAt = (NSXMLElement *)[NSXMLNode elementWithName:@"LookAt"];
 	MNXPoint *point = [pointArray objectAtIndex:0];
-	
+
 	CGFloat top = point.latitude;
 	CGFloat bottom = point.latitude;
 	CGFloat left = point.longitude;
 	CGFloat right = point.longitude;
-	
+
 	for (MNXPoint *point in pointArray) {
 		if (point.latitude > top) {
 			top = point.latitude;
@@ -260,9 +261,9 @@ static NSDateFormatter *sharedFormatter;
 		}
 		if (point.longitude < left) {
 			left = point.longitude;
-		}		
+		}
 	}
-	
+
 	[lookAt addChild:[NSXMLNode elementWithName:@"longitude" stringValue:[NSString stringWithFormat:@"%f", (right + (left - right) / 2.0)]]];
 	[lookAt addChild:[NSXMLNode elementWithName:@"latitude" stringValue:[NSString stringWithFormat:@"%f", (bottom + (top - bottom) / 2.0)]]];
 	[lookAt addChild:[NSXMLNode elementWithName:@"altitude" stringValue:@"0"]];
@@ -272,9 +273,9 @@ static NSDateFormatter *sharedFormatter;
 	NSInteger range = (NSUInteger)(dist * 1.5 * 1000);
 	[lookAt addChild:[NSXMLNode elementWithName:@"range" stringValue:[NSString stringWithFormat:@"%d", range]]];
 	[document addChild:lookAt];
-	
+
 	[document addChild:[self KMLNode]];
-	
+
 	NSData *data = [xml XMLData];
 	return data;
 }
@@ -282,11 +283,11 @@ static NSDateFormatter *sharedFormatter;
 {
 	NSXMLElement *activities = nil;
 	NSXMLElement *root = (NSXMLElement *)[MNXTrack TCXRootNode:&activities];
-	
+
 	NSXMLDocument *xml = [[[NSXMLDocument alloc] initWithRootElement:root] autorelease];
 	[xml setVersion:@"1.0"];
 	[xml setCharacterEncoding:@"UTF-8"];
-	
+
 	NSXMLNode *activity = [self TCXNode];
 	if (activity) {
 		[activities addChild:activity];
@@ -295,7 +296,6 @@ static NSDateFormatter *sharedFormatter;
 	NSData *data = [xml XMLData];
 	return data;
 }
-
 
 - (NSString *)HTML
 {
@@ -355,7 +355,7 @@ static NSDateFormatter *sharedFormatter;
 		bottom = point.latitude;
 		left = point.longitude;
 		right = point.longitude;
-	}	
+	}
 	for (MNXPoint *point in pointArray) {
 		[addLineString appendFormat:@"\tpoly.getPath().push(new google.maps.LatLng(%f, %f));\n", point.latitude, point.longitude];
 		if (point.latitude > top) {
@@ -369,34 +369,34 @@ static NSDateFormatter *sharedFormatter;
 		}
 		if (point.longitude < left) {
 			left = point.longitude;
-		}	
+		}
 	}
 	NSArray *splits = splitKM;
 	NSString *unit = NSLocalizedString(@"km", @"");
-	
+
 	if ([NSLocale usingUSMeasurementUnit]) {
 		splits = splitMile;
 		unit = NSLocalizedString(@"ml", @"");
 	}
-	
+
 	NSColor *aColor = nil;
 	if ([pointArray count]) {
 		aColor = [NSColor redColor];
 		MNXPoint *point = [pointArray objectAtIndex:0];
 		NSString *base64Image = [NSImage base64ImageWithText:NSLocalizedString(@"Start", @"")  additionalText:@"" color:aColor];
 		NSString *inlineString = [NSString stringWithFormat:@"data:image/tiff;base64,%@", base64Image];
-		[addLineString appendFormat:@"\tnew google.maps.Marker({position:new google.maps.LatLng(%f, %f), map: map, icon: '%@', animation: google.maps.Animation.DROP})\n", point.latitude, point.longitude, inlineString];		
-	}	
+		[addLineString appendFormat:@"\tnew google.maps.Marker({position:new google.maps.LatLng(%f, %f), map: map, icon: '%@', animation: google.maps.Animation.DROP})\n", point.latitude, point.longitude, inlineString];
+	}
 	if ([pointArray count] > 1) {
 		aColor = [NSColor redColor];
 		MNXPoint *point = [pointArray lastObject];
-		NSString *base64Image = [NSImage base64ImageWithText:NSLocalizedString(@"End", @"")  additionalText:@"" color:aColor];
+		NSString *base64Image = [NSImage base64ImageWithText:NSLocalizedString(@"End", @"")	 additionalText:@"" color:aColor];
 		NSString *inlineString = [NSString stringWithFormat:@"data:image/tiff;base64,%@", base64Image];
-		[addLineString appendFormat:@"\tnew google.maps.Marker({position:new google.maps.LatLng(%f, %f), map: map, icon: '%@', animation: google.maps.Animation.DROP})\n", point.latitude, point.longitude, inlineString];		
+		[addLineString appendFormat:@"\tnew google.maps.Marker({position:new google.maps.LatLng(%f, %f), map: map, icon: '%@', animation: google.maps.Animation.DROP})\n", point.latitude, point.longitude, inlineString];
 	}
-	
+
 	aColor = [NSColor blueColor];
-	if ([splits count] > 1) {	
+	if ([splits count] > 1) {
 		for (NSDictionary *d in splits) {
 			MNXPoint *point = [d objectForKey:@"point"];
 			NSString *base64Image = [NSImage base64ImageWithText:[NSString stringWithFormat:@"%d %@", [[d objectForKey:@"distance"] integerValue], unit]  additionalText:@"" color:aColor];
@@ -404,15 +404,12 @@ static NSDateFormatter *sharedFormatter;
 			[addLineString appendFormat:@"\tnew google.maps.Marker({position:new google.maps.LatLng(%f, %f), map: map, icon: '%@', animation: google.maps.Animation.DROP})\n", point.latitude, point.longitude, inlineString];
 		}
 	}
-	
+
 	NSString *boundsString = [NSString stringWithFormat:@"\tvar bounds = new google.maps.LatLngBounds(new google.maps.LatLng(%f, %f), new google.maps.LatLng(%f, %f));\n", top, left, bottom, right];
 	[addLineString appendString:boundsString];
 	[addLineString appendString:@"\tmap.fitBounds(bounds);\n"];
-	
-	NSString *HTML = [NSString stringWithFormat:template, (bottom + (top - bottom) / 2.0),
-					  (right + (left - right) / 2.0),
-					  addLineString];
-	
+
+	NSString *HTML = [NSString stringWithFormat:template, (bottom + (top - bottom) / 2.0), (right + (left - right) / 2.0),	addLineString];
 	return HTML;
 }
 
@@ -424,7 +421,7 @@ static NSDateFormatter *sharedFormatter;
 	[pointArray setArray:inPoints];
 	[splitKM removeAllObjects];
 	[splitMile removeAllObjects];
-	
+
 	duration = 0.0;
 	totalDistanceKM = 0.0;
 	averagePaceKM = 0.0;
@@ -433,53 +430,53 @@ static NSDateFormatter *sharedFormatter;
 	totalDistanceMile = 0.0;
 	averagePaceMile = 0.0;
 	averageSpeedMile = 0.0;
-	maxSpeedMile = 0.0;		
-	
+	maxSpeedMile = 0.0;
+
 	if ([pointArray count] < 1) {
 		return;
 	}
-	
+
 	CGFloat newDistanceKM = 0.0;
 	CGFloat newMaxSpeedKM = 0.0;
 	CGFloat newDistanceMile = 0.0;
 	CGFloat newMaxSpeedMile = 0.0;
-	
+
 	for (NSInteger i = 1; i < [pointArray count]; i++) {
 		MNXPoint *currentPoint = [pointArray objectAtIndex:i];
 		MNXPoint *previousPoint = [pointArray objectAtIndex:i - 1];
 
 		/// KM
-		
+
 		CGFloat aDistanceKM = distanceKM(currentPoint.latitude, currentPoint.longitude, previousPoint.latitude, previousPoint.longitude);
 		if (aDistanceKM > 0.0) {
-			newDistanceKM += aDistanceKM;			
+			newDistanceKM += aDistanceKM;
 		}
 		currentPoint.distanceKM = newDistanceKM;
 		currentPoint.speedKM = aDistanceKM / fabs([currentPoint.date timeIntervalSinceDate:previousPoint.date]) * 60.0 * 60.0;
 		if (i == 1 && [pointArray count] > 2) {
 			[(MNXPoint *)[pointArray objectAtIndex:0] setSpeedKM:currentPoint.speedKM];
-		}		
+		}
 		if (currentPoint.speedKM > newMaxSpeedKM) {
 			newMaxSpeedKM = currentPoint.speedKM;
 		}
 
 		/// Mile
-		
+
 		CGFloat aDistanceMile = distanceMile(currentPoint.latitude, currentPoint.longitude, previousPoint.latitude, previousPoint.longitude);
 		if (aDistanceMile > 0.0) {
-			newDistanceMile += aDistanceMile;			
+			newDistanceMile += aDistanceMile;
 		}
 		currentPoint.distanceMile = newDistanceMile;
 		currentPoint.speedMile = aDistanceMile / fabs([currentPoint.date timeIntervalSinceDate:previousPoint.date]) * 60.0 * 60.0;
 		if (i == 1 && [pointArray count] > 2) {
 			[(MNXPoint *)[pointArray objectAtIndex:0] setSpeedMile:currentPoint.speedMile];
-		}		
+		}
 		if (currentPoint.speedMile > newMaxSpeedMile) {
 			newMaxSpeedMile = currentPoint.speedMile;
 		}
 
 		/// KM
-		
+
 		if ((NSInteger)newDistanceKM > [splitKM count]) {
 			MNXPoint *pointAtLastSplit = [[splitKM lastObject] objectForKey:@"point"];
 			if (!pointAtLastSplit) {
@@ -496,17 +493,17 @@ static NSDateFormatter *sharedFormatter;
 			MNXPoint *pointAtLastSplit = [[splitKM lastObject] objectForKey:@"point"];
 			if (!pointAtLastSplit) {
 				pointAtLastSplit = [pointArray objectAtIndex:0];
-			}			
+			}
 			NSMutableDictionary *split =[NSMutableDictionary dictionary];
 			[split setObject:currentPoint forKey:@"point"];
 			NSTimeInterval interval = [currentPoint.date timeIntervalSinceDate:pointAtLastSplit.date];
 			[split setObject:[NSNumber numberWithDouble:interval] forKey:@"pace"];
-			[split setObject:[NSNumber numberWithFloat:(CGFloat)newDistanceKM] forKey:@"distance"];			
+			[split setObject:[NSNumber numberWithFloat:(CGFloat)newDistanceKM] forKey:@"distance"];
 			[splitKM addObject:split];
 		}
-		
+
 		/// Mile
-		
+
 		if ((NSInteger)newDistanceMile > [splitMile count]) {
 			MNXPoint *pointAtLastSplit = [[splitMile lastObject] objectForKey:@"point"];
 			if (!pointAtLastSplit) {
@@ -523,22 +520,22 @@ static NSDateFormatter *sharedFormatter;
 			MNXPoint *pointAtLastSplit = [[splitMile lastObject] objectForKey:@"point"];
 			if (!pointAtLastSplit) {
 				pointAtLastSplit = [pointArray objectAtIndex:0];
-			}			
+			}
 			NSMutableDictionary *split =[NSMutableDictionary dictionary];
 			[split setObject:currentPoint forKey:@"point"];
 			NSTimeInterval interval = [currentPoint.date timeIntervalSinceDate:pointAtLastSplit.date];
 			[split setObject:[NSNumber numberWithDouble:interval] forKey:@"pace"];
-			[split setObject:[NSNumber numberWithFloat:(CGFloat)newDistanceMile] forKey:@"distance"];			
+			[split setObject:[NSNumber numberWithFloat:(CGFloat)newDistanceMile] forKey:@"distance"];
 			[splitMile addObject:split];
 		}
 	}
-	
+
 	MNXPoint *firstPoint = [pointArray objectAtIndex:0];
 	MNXPoint *lastPoint = [pointArray lastObject];
-	
+
 	NSTimeInterval newDuration = [lastPoint.date timeIntervalSinceDate:firstPoint.date];
 	duration = newDuration;
-	
+
 	totalDistanceKM = newDistanceKM;
 	totalDistanceMile = newDistanceMile;
 
@@ -549,7 +546,7 @@ static NSDateFormatter *sharedFormatter;
 	if (newDistanceMile > 0.0) {
 		averagePaceMile = newDuration / newDistanceMile;
 	}
-	
+
 	if (newDuration) {
 		averageSpeedKM = (newDistanceKM / newDuration) * 60.0 * 60.0;
 		averageSpeedMile = (newDistanceMile / newDuration) * 60.0 * 60.0;

@@ -9,48 +9,48 @@
 
 @interface MNXAppDelegate : NSObject
 	<NSApplicationDelegate,
-	MNXDataManagerDelegate> 
+	MNXDataManagerDelegate>
 {
 	NSSplitView *mainSplitView;
 	NSSplitView *contentSplitView;
 	NSSplitView *sourceListSplitView;
-	
+
 	MNXDataManager *dataManager;
 	MNXTrack *currentTrack;
-	
+
 	NSDateFormatter *dateFormatter;
-    
+
 	NSWindow *window;
 	NSTableView *tracksTableView;
 	NSTableView *pointsTableView;
 	NSTableView *paceTableView;
 	MNXSpeedView *speedView;
 	WebView *webView;
-	
+
 	NSImageView *infoImageView;
 	NSTextField *trackTotalDistanceLabel;
 	NSTextField *trackDurationLabel;
 	NSTextField *trackPaceLabel;
 	NSTextField *trackSpeedLabel;
-	
+
 	NSTextField *totalDistanceLabel;
 	NSTextField *totalDurationLabel;
 	NSTextField *totalPaceLabel;
 	NSTextField *totalSpeedLabel;
-	
+
 	NSButton *cancelButton;
-	
+
 	NSWindow *sheetWindow;
 	NSTextField *messageLabel;
 	NSProgressIndicator *progressIndicator;
-	
+
 	NSArrayController *portListArrayController;
-	NSPopUpButton *portPopUpButton;	
+	NSPopUpButton *portPopUpButton;
 	NSMenuItem *deviceListMenuItem;
-	
+
 	MNXPreferenceController *preferenceController;
 	MNXSelectionController *selectionController;
-	
+
 	NSView *filetypeView;
 	NSPopUpButton *filetypePopUpButton;
 }

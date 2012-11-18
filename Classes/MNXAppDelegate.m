@@ -10,7 +10,7 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
+
 	[currentTrack release];
 	[dateFormatter release];
 	[dataManager release];
@@ -24,43 +24,43 @@
 	preferenceController = [[MNXPreferenceController alloc] init];
 	selectionController = [[MNXSelectionController alloc] init];
 	[selectionController setDelegate:(id)self];
-	
+
 	NSToolbar *toolbar = [[[NSToolbar alloc] initWithIdentifier:@"toolbar"] autorelease];
 	[toolbar setDelegate:self];
 	[toolbar setAllowsUserCustomization:YES];
 	[window setToolbar:toolbar];
 	[window setExcludedFromWindowsMenu:YES];
-	
+
 	[webView setUIDelegate:self];
 
 	MNXTrackCell *cell = [[[MNXTrackCell alloc] init] autorelease];
 	NSTableColumn *tracksColumn = [tracksTableView tableColumnWithIdentifier:@"tracks"];
 	[tracksColumn setDataCell:cell];
-	
+
 	[tracksTableView setDataSource:self];
 	[tracksTableView setDelegate:self];
 	[tracksTableView setRowHeight:20.0];
-	
+
 	[pointsTableView setDataSource:self];
 	[pointsTableView setDelegate:self];
-	
+
 	[paceTableView setDataSource:self];
 	[paceTableView setDelegate:self];
-	
+
 	dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-	
+
 	[contentSplitView setDelegate:self];
 	[mainSplitView setDelegate:self];
 	[sourceListSplitView setDelegate:self];
-	
+
 	[self refresh];
-	
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemTimeDidChange:) name:NSSystemClockDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timeZoneDidChange:) name:NSSystemTimeZoneDidChangeNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange:) name:NSCurrentLocaleDidChangeNotification object:nil];	
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localeDidChange:) name:NSCurrentLocaleDidChangeNotification object:nil];
+
 }
 
 - (void)updatePorts
@@ -71,9 +71,9 @@
 		if ([[p type] isEqualToString:[NSString stringWithUTF8String:kIOSerialBSDModemType]]) {
 			[a addObject:p];
 		}
-	}	
-	[portListArrayController setContent:[NSMutableArray arrayWithArray:a]];	
-		
+	}
+	[portListArrayController setContent:[NSMutableArray arrayWithArray:a]];
+
 	NSMenu *menu = [[[NSMenu alloc] initWithTitle:NSLocalizedString(@"Devices", @"")] autorelease];
 	NSUInteger tag = 0;
 	for (AMSerialPort *p in a) {
@@ -83,20 +83,20 @@
 		[menu addItem:menuItem];
 	}
 	if (![a count]) {
-		NSMenuItem *menuItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"No Device", @"") action:NULL keyEquivalent:@""] autorelease];	
+		NSMenuItem *menuItem = [[[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"No Device", @"") action:NULL keyEquivalent:@""] autorelease];
 		[menu addItem:menuItem];
 	}
 	[deviceListMenuItem setSubmenu:menu];
-	
+
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	[cancelButton setHidden:YES];
 	[messageLabel setStringValue:NSLocalizedString(@"Loading saved data...", @"")];
 	[progressIndicator setUsesThreadedAnimation:YES];
 	[progressIndicator startAnimation:self];
-	[NSApp beginSheet:sheetWindow modalForWindow:window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];	
+	[NSApp beginSheet:sheetWindow modalForWindow:window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 	[sheetWindow orderFront:self];
 	dataManager = [[MNXDataManager alloc] init];
 	dataManager.delegate = self;
@@ -105,9 +105,9 @@
 	[NSApp endSheet:sheetWindow];
 	[sheetWindow orderOut:self];
 	[progressIndicator stopAnimation:self];
-	
-	[tracksTableView reloadData];	
-	
+
+	[tracksTableView reloadData];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddPorts:) name:AMSerialPortListDidAddPortsNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovePorts:) name:AMSerialPortListDidRemovePortsNotification object:nil];
 }
@@ -133,7 +133,7 @@
 	if (![[portListArrayController selectedObjects] count]) {
 		return;
 	}
-	
+
 	AMSerialPort *port = [[portListArrayController selectedObjects] lastObject];
 	[dataManager downloadDataFromPort:port];
 }
@@ -146,8 +146,8 @@
 	if (![[portListArrayController selectedObjects] count]) {
 		return;
 	}
-	
-	AMSerialPort *port = [[portListArrayController selectedObjects] lastObject];	
+
+	AMSerialPort *port = [[portListArrayController selectedObjects] lastObject];
 	[dataManager purgeDataWithPort:port];
 }
 - (IBAction)selectDevice:(id)sender
@@ -172,9 +172,9 @@
 		return;
 	}
 
-	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];	
+	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];
 	NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Do you really want to delete this activity?", @"") defaultButton:NSLocalizedString(@"Delete", @"") alternateButton:NSLocalizedString(@"Cancel", @"") otherButton:nil informativeTextWithFormat:@""];
-	
+
 	[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(deleteAlertDidEnd:returnCode:contextInfo:) contextInfo:aTrack];
 }
 
@@ -189,10 +189,10 @@
 			break;
 		case 2:
 			return @"tcx";
-			break;						
+			break;
 		default:
 			break;
-	}	
+	}
 	return @"gpx";
 }
 
@@ -205,34 +205,34 @@
 		}
 		if (![dataManager.tracks count]) {
 			return;
-		}	
+		}
 	}
 	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];
-	
+
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
 	[filetypePopUpButton selectItemWithTag:0];
 	[savePanel setDelegate:(id)self];
 	[savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"gpx"]];
 	[savePanel setAccessoryView:filetypeView];
 	[savePanel setAllowsOtherFileTypes:NO];
-	[savePanel setPrompt:NSLocalizedString(@"Export", @"")];	
+	[savePanel setPrompt:NSLocalizedString(@"Export", @"")];
 	[savePanel setNameFieldLabel:NSLocalizedString(@"Export As:", @"")];
-	
+
 	if (![sender tag]) {
 		[savePanel setTitle:NSLocalizedString(@"Export...", @"")];
 		NSString *filename = [[aTrack title] stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 		filename = [filename stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 		filename = [filename stringByAppendingPathExtension:@"gpx"];
-		[savePanel setNameFieldStringValue:filename];		
+		[savePanel setNameFieldStringValue:filename];
 	}
 	else {
 		[savePanel setTitle:NSLocalizedString(@"Export All...", @"")];
-		[savePanel setNameFieldStringValue:NSLocalizedString(@"MNX Activities", @"")];		
+		[savePanel setNameFieldStringValue:NSLocalizedString(@"MNX Activities", @"")];
 	}
-	
+
 	__block BOOL success = NO;
 	__block NSError *error = nil;
-	
+
 	[savePanel beginSheetModalForWindow:window completionHandler:^(NSInteger result) {
 		if (result == NSOKButton) {
 			NSData *data = nil;
@@ -264,13 +264,13 @@
 						break;
 					default:
 						break;
-				}				
+				}
 			}
-			
+
 			NSURL *URL = [savePanel URL];
 			success = [data writeToURL:URL options:NSDataWritingAtomic error:&error];
-		}		
-	}];	
+		}
+	}];
 }
 
 - (IBAction)googleEarth:(id)sender
@@ -282,15 +282,15 @@
 		[alert beginSheetModalForWindow:window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 		return;
 	}
-	
+
 	if ([tracksTableView selectedRow] < 0) {
 		return;
 	}
 	if (![dataManager.tracks count]) {
 		return;
-	}	
-	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];	
-	
+	}
+	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];
+
 	NSString *filePath = [dataManager tempFilePathWithExtension:@"kml"];
 	[[aTrack KMLData] writeToURL:[NSURL fileURLWithPath:filePath] atomically:YES];
 	[space openFile:filePath withApplication:@"Google Earth"];
@@ -303,7 +303,7 @@
 	if (![dataManager.tracks count]) {
 		return;
 	}
-	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];	
+	MNXTrack *aTrack = [dataManager.tracks objectAtIndex:[tracksTableView selectedRow]];
 	NSString *filePath = [dataManager tempFilePathWithExtension:@"html"];
 	[[aTrack HTML] writeToURL:[NSURL fileURLWithPath:filePath] atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:filePath]];
@@ -344,7 +344,7 @@
 - (void)refresh
 {
 	NSTableColumn *aColumn = [paceTableView tableColumnWithIdentifier:@"unit"];
-	
+
 	[(MNXSourceListTableView *)tracksTableView setNoData:([dataManager.tracks count] < 1)];
 
 	if ([NSLocale usingUSMeasurementUnit]) {
@@ -353,7 +353,7 @@
 	else {
 		[[aColumn headerCell] setStringValue:NSLocalizedString(@"KM", @"")];
 	}
-	
+
 	if (1) {
 		NSString *distance = @"";
 		if ([NSLocale usingUSMeasurementUnit]) {
@@ -363,9 +363,9 @@
 			distance = [NSString stringWithFormat:@"%.2f %@", dataManager.totalDistanceKM, NSLocalizedString(@"km", @"")];
 		}
 		[totalDistanceLabel setStringValue:distance];
-		
+
 		[totalDurationLabel setStringValue:NSStringFromNSTimeInterval(dataManager.totalDuration)];
-		
+
 		NSString *pace = @"";
 		if ([NSLocale usingUSMeasurementUnit]) {
 			pace = [NSString stringWithFormat:@"%@ %@", NSStringFromNSTimeInterval(dataManager.averagePaceMile), NSLocalizedString(@"per mile", @"")];
@@ -374,35 +374,35 @@
 			pace = [NSString stringWithFormat:@"%@ %@", NSStringFromNSTimeInterval(dataManager.averagePaceKM), NSLocalizedString(@"per kilometre", @"")];
 		}
 		[totalPaceLabel setStringValue:pace];
-		
+
 		NSString *speed = @"";
 		if ([NSLocale usingUSMeasurementUnit]) {
 			speed = [NSString stringWithFormat:@"%.2f %@", dataManager.averageSpeedMile, NSLocalizedString(@"ml/h", @"")];
 		}
 		else {
 			speed = [NSString stringWithFormat:@"%.2f %@", dataManager.averageSpeedKM, NSLocalizedString(@"km/h", @"")];
-		}		
-		
-		[totalSpeedLabel setStringValue:speed];	
+		}
+
+		[totalSpeedLabel setStringValue:speed];
 	}
-	
+
 	if (!self.currentTrack) {
 		[pointsTableView reloadData];
 		[paceTableView reloadData];
 		speedView.currentTrack = nil;
 		[infoImageView setImage:[NSImage calendarImageWithDate:nil]];
-		
+
 		[trackTotalDistanceLabel setStringValue:@"0"];
 		[trackDurationLabel setStringValue:@"--:--"];
 		[trackPaceLabel setStringValue:@"--:--"];
-		[trackSpeedLabel setStringValue:@"0"];		
-		
+		[trackSpeedLabel setStringValue:@"0"];
+
 		[window setTitle:NSLocalizedString(@"MNX", @"")];
 	}
-	else {		
+	else {
 		[pointsTableView reloadData];
 		[paceTableView reloadData];
-		
+
 		NSString *distance = @"";
 		if ([NSLocale usingUSMeasurementUnit]) {
 			distance = [NSString stringWithFormat:@"%.2f %@", self.currentTrack.totalDistanceMile, NSLocalizedString(@"ml", @"")];
@@ -411,7 +411,7 @@
 			distance = [NSString stringWithFormat:@"%.2f %@", self.currentTrack.totalDistanceKM, NSLocalizedString(@"km", @"")];
 		}
 		[trackTotalDistanceLabel setStringValue:distance];
-		
+
 		[trackDurationLabel setStringValue:NSStringFromNSTimeInterval(self.currentTrack.duration)];
 
 		NSString *pace = @"";
@@ -429,25 +429,24 @@
 		}
 		else {
 			speed = [NSString stringWithFormat:@"%.2f %@", self.currentTrack.averageSpeedKM, NSLocalizedString(@"km/h", @"")];
-		}		
-		
-		[trackSpeedLabel setStringValue:speed];		
-		
+		}
+
+		[trackSpeedLabel setStringValue:speed];
+
 		NSDate *date = nil;
 		if ([self.currentTrack.points count]) {
 			MNXPoint *aPoint = [self.currentTrack.points objectAtIndex:0];
 			date = [aPoint date];
 		}
-		
+
 		NSImage *image = [NSImage calendarImageWithDate:date];
 		[infoImageView setImage:image];
-		
+
 		speedView.currentTrack = self.currentTrack;
-		
+
 		[window setTitle:[NSString stringWithFormat:NSLocalizedString(@"%@ - MNX", @""), self.currentTrack.title]];
 	}
 }
-
 
 #pragma mark -
 #pragma mark AMSerialPortListDidAddPortsNotification and AMSerialPortListDidRemovePortsNotification
@@ -462,14 +461,13 @@
 	[self updatePorts];
 }
 
-
 #pragma mark -
 
 - (void)downloadErrorAlertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
 	[progressIndicator stopAnimation:self];
 	[NSApp endSheet:sheetWindow];
-	[sheetWindow orderOut:self];	
+	[sheetWindow orderOut:self];
 }
 - (void)dataManager:(MNXDataManager *)inManager didFaileWithError:(NSError *)inError;
 {
@@ -483,7 +481,7 @@
 - (void)dataManagerDidStartDownloadingData:(MNXDataManager *)inManager
 {
 	[cancelButton setHidden:NO];
-	
+
 	[NSApp beginSheet:sheetWindow modalForWindow:window modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 	[sheetWindow orderFront:self];
 	[messageLabel setStringValue:NSLocalizedString(@"Start downloading data...", @"")];
@@ -498,7 +496,7 @@
 	[progressIndicator setMaxValue:1.0];
 	[progressIndicator setMinValue:0.0];
 	[progressIndicator setDoubleValue:(double)inProgress];
-	
+
 }
 - (void)dataManagerDidFinishDownloadingData:(MNXDataManager *)inManager
 {
@@ -507,7 +505,7 @@
 {
 	[messageLabel setStringValue:NSLocalizedString(@"Start parsing data...", @"")];
 	[progressIndicator setUsesThreadedAnimation:YES];
-	[progressIndicator setIndeterminate:YES];	
+	[progressIndicator setIndeterminate:YES];
 	[progressIndicator startAnimation:self];
 }
 - (void)_delayedShowSelectionWindow:(NSArray *)tracks
@@ -530,7 +528,7 @@
 	if ([window attachedSheet]) {
 		[progressIndicator stopAnimation:self];
 		[NSApp endSheet:sheetWindow];
-		[sheetWindow orderOut:self];		
+		[sheetWindow orderOut:self];
 	}
 }
 - (void)dataManagerUpdated:(MNXDataManager *)inManager
@@ -551,9 +549,9 @@
 - (void)dataManagerDidFinishPurgineData:(MNXDataManager *)inManager
 {
 	[progressIndicator stopAnimation:self];
-	
+
 	[NSApp endSheet:sheetWindow];
-	[sheetWindow orderOut:self];	
+	[sheetWindow orderOut:self];
 }
 
 
@@ -579,13 +577,13 @@
 {
 	if ([menuItem action] == @selector(changeExportFileType:)) {
 		return YES;
-	}	
+	}
 	if ([menuItem action] == @selector(openHomepage:)) {
 		return YES;
-	}	
+	}
 	if ([menuItem action] == @selector(feedback:)) {
 		return YES;
-	}	
+	}
 	if ([menuItem action] == @selector(showWindow:)) {
 		if ([window isMiniaturized]) {
 			[menuItem setState:NSMixedState];
@@ -604,7 +602,7 @@
 		}
 		else {
 			[menuItem setState:NSOffState];
-		}		
+		}
 	}
 	if ([menuItem action] == @selector(download:) ||
 		[menuItem action] == @selector(purgeData:)) {
@@ -619,7 +617,7 @@
 		if (![dataManager.tracks count]) {
 			return NO;
 		}
-	}		
+	}
 	if (([menuItem action] == @selector(export:) && ![menuItem tag]) ||
 		[menuItem action] == @selector(googleEarth:) ||
 		[menuItem action] == @selector(deleteTrack:) ||
@@ -630,7 +628,7 @@
 		}
 		if (![dataManager.tracks count]) {
 			return NO;
-		}		
+		}
 	}
 	return YES;
 }
@@ -650,7 +648,7 @@
 		if (![dataManager.tracks count]) {
 			return NO;
 		}
-	}	
+	}
 	if (([theItem action] == @selector(export:) && ![theItem tag]) ||
 		[theItem action] == @selector(googleEarth:) ||
 		[theItem action] == @selector(deleteTrack:) ||
@@ -661,7 +659,7 @@
 		}
 		if (![dataManager.tracks count]) {
 			return NO;
-		}		
+		}
 	}
 	return YES;
 }

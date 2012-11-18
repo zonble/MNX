@@ -13,10 +13,8 @@
 - (void)setNewTimeZoneSettingWithName:(NSString *)newTimeZoneName;
 - (IBAction)changeTimezoneSettingAction:(id)sender;
 
-
 @property (assign) IBOutlet NSMatrix *timezoneMatrix;
 @property (assign) IBOutlet NSOutlineView *timeZoneOutlineView;
 @property (readonly) NSUndoManager *undoManager;
-
 
 @end

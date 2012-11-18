@@ -2,7 +2,7 @@
 
 @implementation MNXAdditionalSplitDeviderView
 
-- (void)drawRect:(NSRect)dirtyRect 
+- (void)drawRect:(NSRect)dirtyRect
 {
 	[[NSColor whiteColor] set];
 	[NSBezierPath fillRect:[self bounds]];
@@ -11,7 +11,6 @@
 	NSImage *image = [NSImage imageNamed:@"sidebarResizeWidget"];
 	NSRect imageFrame = NSMakeRect([self bounds].size.width - 15.0, 0.0, 15.0, 23.0);
 	[image drawInRect:imageFrame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-	
 }
 
 @end
